@@ -21,7 +21,7 @@ __author__ = 'Igor Vitorio Custodio <igorvc@vulcanno.com.br>'
 __version__ = '1.3.1'
 __licence__ = 'GPL V3'
 
-from ISOErrors import *
+from ISO8583.ISOErrors import *
 import struct
 
 
