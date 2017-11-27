@@ -303,7 +303,7 @@ class ISO8583:
         type = "%s" % type
         if len(type) > 4:
             type = type[0:3]
-            raise ValueToLarge('Error: value up to size! MTI limit size = 4')
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! MTI limit size = 4')
 
         typeT = "";
         if len(type) < 4:
@@ -376,7 +376,7 @@ class ISO8583:
             print('Setting bit inside bitmap bit[%s] = %s') % (bit, value)
 
         if bit < 1 or bit > 128:
-            raise BitInexistent("Bit number %s dosen't exist!" % bit)
+            raise InvalidIso8583("BitInexistent: Bit number %s dosen't exist!" % bit)
 
         # caculate the position insede bitmap
         pos = 1
@@ -600,10 +600,10 @@ class ISO8583:
 
         if len(value) > 99:
             # value = value[0:99]
-            raise ValueToLarge('Error: value up to size! Bit[%s] of type %s limit size = %s' % (
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! Bit[%s] of type %s limit size = %s' % (
             bit, self.getBitType(bit), self.getBitLimit(bit)))
         if len(value) > self.getBitLimit(bit):
-            raise ValueToLarge('Error: value up to size! Bit[%s] of type %s limit size = %s' % (
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! Bit[%s] of type %s limit size = %s' % (
             bit, self.getBitType(bit), self.getBitLimit(bit)))
 
         size = "%s" % len(value)
@@ -628,10 +628,10 @@ class ISO8583:
         value = "%s" % value
 
         if len(value) > 999:
-            raise ValueToLarge('Error: value up to size! Bit[%s] of type %s limit size = %s' % (
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! Bit[%s] of type %s limit size = %s' % (
             bit, self.getBitType(bit), self.getBitLimit(bit)))
         if len(value) > self.getBitLimit(bit):
-            raise ValueToLarge('Error: value up to size! Bit[%s] of type %s limit size = %s' % (
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! Bit[%s] of type %s limit size = %s' % (
             bit, self.getBitType(bit), self.getBitLimit(bit)))
 
         size = "%s" % len(value)
@@ -657,7 +657,7 @@ class ISO8583:
 
         if len(value) > self.getBitLimit(bit):
             value = value[0:self.getBitLimit(bit)]
-            raise ValueToLarge('Error: value up to size! Bit[%s] of type %s limit size = %s' % (
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! Bit[%s] of type %s limit size = %s' % (
             bit, self.getBitType(bit), self.getBitLimit(bit)))
 
         self.BITMAP_VALUES[bit] = value.zfill(self.getBitLimit(bit))
@@ -681,7 +681,7 @@ class ISO8583:
 
         if len(value) > self.getBitLimit(bit):
             value = value[0:self.getBitLimit(bit)]
-            raise ValueToLarge('Error: value up to size! Bit[%s] of type %s limit size = %s' % (
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! Bit[%s] of type %s limit size = %s' % (
             bit, self.getBitType(bit), self.getBitLimit(bit)))
 
         self.BITMAP_VALUES[bit] = value.zfill(self.getBitLimit(bit))
@@ -705,7 +705,7 @@ class ISO8583:
 
         if len(value) > self.getBitLimit(bit):
             value = value[0:self.getBitLimit(bit)]
-            raise ValueToLarge('Error: value up to size! Bit[%s] of type %s limit size = %s' % (
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! Bit[%s] of type %s limit size = %s' % (
             bit, self.getBitType(bit), self.getBitLimit(bit)))
 
         self.BITMAP_VALUES[bit] = value.zfill(self.getBitLimit(bit))
@@ -729,7 +729,7 @@ class ISO8583:
 
         if len(value) > self.getBitLimit(bit):
             value = value[0:self.getBitLimit(bit)]
-            raise ValueToLarge('Error: value up to size! Bit[%s] of type %s limit size = %s' % (
+            raise InvalidIso8583('Error: (ValueToLarge) Value up to size! Bit[%s] of type %s limit size = %s' % (
             bit, self.getBitType(bit), self.getBitLimit(bit)))
 
         self.BITMAP_VALUES[bit] = value.zfill(self.getBitLimit(bit))
@@ -804,7 +804,7 @@ class ISO8583:
         self.__buildBitmap()
 
         if self.MESSAGE_TYPE_INDICATION == '':
-            raise InvalidMTI('Check MTI! Do you set it?')
+            raise InvalidIso8583('InvalidMTI: Check MTI! Do you set it?')
 
         resp = "";
 
@@ -843,7 +843,7 @@ class ISO8583:
 
         # validating bit position
         if bit == 1 or bit == 64 or bit < 0 or bit > 128:
-            raise BitInexistent("Error %d cannot be changed because has a invalid number!" % bit)
+            raise InvalidIso8583("Error: (BitInexistent) %d cannot be changed because has a invalid number!" % bit)
 
         # need to validate if the type and size is compatible! example slimit = 100 and type = LL
 
@@ -854,13 +854,11 @@ class ISO8583:
                     print('Bit %d redefined!' % bit)
 
             else:
-                raise InvalidValueType(
-                    "Error bit %d cannot be changed because %s is not a valid valueType (a, an, n ansb, b)!" % (
+                raise InvalidIso8583("Error: (InvalidValueType) Bit %d cannot be changed because %s is not a valid valueType (a, an, n ansb, b)!" % (
                     bit, valueType))
             # return
         else:
-            raise InvalidBitType(
-                "Error bit %d cannot be changed because %s is not a valid bitType (Hex, N, AN, ANS, LL, LLL)!" % (
+            raise InvalidIso8583("Error: (InvalidBitType) Bit %d cannot be changed because %s is not a valid bitType (Hex, N, AN, ANS, LL, LLL)!" % (
                 bit, bitType))
         # return
 
@@ -943,8 +941,7 @@ class ISO8583:
                         print('Size of the message in LL = %s' % valueSize)
 
                     if valueSize > self.getBitLimit(cont):
-                        print('This bit is larger thant the specification.')
-                        # raise ValueToLarge("This bit is larger than the especification!")
+                        raise InvalidIso8583("Error: (ValueToLarge) This bit is larger than the especification!")
 
                     self.BITMAP_VALUES[cont] = strWithoutMtiBitmap[offset:offset + 2] + strWithoutMtiBitmap[
                                                                                         offset + 2:offset + 2 + valueSize]
@@ -968,7 +965,7 @@ class ISO8583:
                         print('Size of the message in LLL = %s' % valueSize)
 
                     if valueSize > self.getBitLimit(cont):
-                        raise ValueToLarge("This bit is larger than the especification!")
+                        raise InvalidIso8583("Error: (ValueToLarge) This bit is larger than the especification!")
                     self.BITMAP_VALUES[cont] = strWithoutMtiBitmap[offset:offset + 3] + strWithoutMtiBitmap[
                                                                                         offset + 3:offset + 3 + valueSize]
 
@@ -1118,7 +1115,7 @@ class ISO8583:
         """
 
         if bit < 1 or bit > 128:
-            raise BitInexistent("Bit number %s dosen't exist!" % bit)
+            raise InvalidIso8583("BitInexistent: Bit number %s dosen't exist!" % bit)
 
         # Is that bit set?
         isThere = False
@@ -1136,7 +1133,7 @@ class ISO8583:
         if isThere:
             return value
         else:
-            raise BitNotSet("Bit number %s was not set!" % bit)
+            raise InvalidIso8583("BitNotSet: Bit number %s was not set!" % bit)
 
     ################################################################################################
 
