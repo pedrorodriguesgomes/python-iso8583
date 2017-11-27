@@ -934,7 +934,11 @@ class ISO8583:
                     print('String = %s offset = %s bit = %s' % (strWithoutMtiBitmap[offset:], offset, cont))
 
                 if self.getBitType(cont) == 'LL':
-                    valueSize = int(strWithoutMtiBitmap[offset:offset + 2])
+                    sss = strWithoutMtiBitmap[offset:offset +2]
+                    if sss != '':
+                        valueSize = int(sss)
+                    else:
+                        valueSize = 0
                     if self.DEBUG == True:
                         print('Size of the message in LL = %s' % valueSize)
 
@@ -955,7 +959,11 @@ class ISO8583:
                         offset += valueSize + 2
 
                 if self.getBitType(cont) == 'LLL':
-                    valueSize = int(strWithoutMtiBitmap[offset:offset + 3])
+                    sss = strWithoutMtiBitmap[offset:offset +3]
+                    if sss != '':
+                        valueSize = int(sss)
+                    else:
+                        valueSize = 0
                     if self.DEBUG == True:
                         print('Size of the message in LLL = %s' % valueSize)
 
