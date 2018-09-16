@@ -23,8 +23,8 @@ from ISO8583.ISOErrors import *
 from socket import *
 
 # Configure the server
-serverIP = "192.168.0.103" 
-serverPort = 8583
+serverIP = "127.0.0.1"
+serverPort = 7777
 maxConn = 5
 bigEndian = True
 #bigEndian = False
@@ -44,7 +44,7 @@ while 1:
 	connection, address = s.accept() 
 	while 1:
 		# receive message
-		isoStr = connection.recv(2048) 
+		isoStr = connection.recv(2048).decode()
 		if isoStr:
 			print ("\nInput ASCII |%s|" % isoStr)
 			pack = ISO8583()
@@ -66,8 +66,8 @@ while 1:
 					break
 					
 					
-			except InvalidIso8583, ii:
-				print ii
+			except InvalidIso8583 as ii:
+				print(ii)
 				break
 			except:
 				print ('Something happened!!!!')

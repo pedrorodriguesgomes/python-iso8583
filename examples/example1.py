@@ -87,8 +87,8 @@ except:
 
 try:
 	print ('Bit 27 is there? %s' % p.getBit(27))
-except BitNotSet, bns:
-	print bns	
+except BitNotSet as bns:
+	print(bns)
 	
 
 #More exceptions...	
@@ -105,9 +105,9 @@ try:
 	iso.setBit(17,17)
 	iso.setBit(49,9861) # this bit is wrong ...
 	iso.setBit(99,99)
-except ValueToLarge, e:
+except ValueToLarge as e:
 		print ('Value too large :( %s' % e)
-except InvalidMTI, i:
+except InvalidMTI as i:
 		print ('This MTI is wrong :( %s' % i)
 
 

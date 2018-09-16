@@ -406,9 +406,11 @@ class ISO8583:
             self.BITMAP[0] = self.BITMAP[0] | self._TMP[2]  # need to set bit 1 of first "bit" in bitmap
 
         if (bit % 8) == 0:
-            pos = (bit / 8) - 1
+            # pos = (bit / 8) - 1
+            pos = (bit // 8) - 1
         else:
-            pos = (bit / 8)
+            # pos = (bit / 8)
+            pos = (bit // 8)
 
         # need to check if the value can be there .. AN , N ... etc ... and the size
 
@@ -1160,6 +1162,8 @@ class ISO8583:
         netIso = ""
         asciiIso = self.getRawIso()
 
+        leng = len(asciiIso)
+
         if bigEndian:
             netIso = struct.pack('!h', len(asciiIso))
             if self.DEBUG == True:
@@ -1169,9 +1173,9 @@ class ISO8583:
             if self.DEBUG == True:
                 print('Pack Little-endian')
 
-        netIso += asciiIso
+        res = netIso + asciiIso.encode()
 
-        return netIso
+        return res
 
     ################################################################################################
 
@@ -1210,7 +1214,7 @@ class ISO8583:
         if len(iso) < 24:
             raise InvalidIso8583('This is not a valid iso!!Invalid Size')
 
-        size = iso[0:2]
+        size = iso[0:2].encode()
         if bigEndian:
             size = struct.unpack('!h', size)
             if self.DEBUG == True:
