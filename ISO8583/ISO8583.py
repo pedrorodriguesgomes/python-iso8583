@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 __author__ = 'Igor Vitorio Custodio <igorvc@vulcanno.com.br>'
-__version__ = '1.3.5'
+__version__ = '1.4'
 __licence__ = 'GPL V3'
 
 import sys
