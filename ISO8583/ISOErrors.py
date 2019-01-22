@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """ Class used do inform errors.
 """
 #Exception used to indicate that the value that setting in the bit is large than the iso limit to that bit!
-class ValueToLarge(Exception):
+class ValueTooLarge(Exception):
 	"""Exeption that indicate that a value that want to set inside the bit is large than the "ISO" limit.
 		This can happen when you have a different specification of mine.
 		If this is the case, you should use "ISO8583.redefineBit()" method and redefine the limit.
@@ -32,7 +32,7 @@ class ValueToLarge(Exception):
 
 
 #Exception to indicate that bit dosen't Exist!		
-class BitInexistent(Exception):
+class BitNonexistent(Exception):
 	"""Exeption that indicate that a bit that you try to manage dosen't exist!
 		Try to check your "setBit". Remember that ISO8583 1993 has only bits from 1 to 128!
 	"""
@@ -76,6 +76,24 @@ class InvalidIso8583(Exception):
 #Exception that indicate a invalid MTI, maybe it is not set
 class InvalidMTI(Exception):
 	"""Exception that indicate a invalid MTI
+	"""
+	def __init__(self, value):
+		self.str = value
+	def __str__(self):
+		return repr(self.str)		
+		
+#Exception that indicate a invalid Format
+class InvalidFormat(Exception):
+	"""Exception that indicate an invalid Format
+	"""
+	def __init__(self, value):
+		self.str = value
+	def __str__(self):
+		return repr(self.str)		
+		
+#Exception that indicate a invalid Length Format
+class InvalidLenForm(Exception):
+	"""Exception that indicate an invalid Length Format
 	"""
 	def __init__(self, value):
 		self.str = value

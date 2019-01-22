@@ -3,6 +3,3 @@ include LICENCE
 include TODO
 include doc/*
 include examples/*
-prune .bzr
-prune examples/*UT*
-prune examples/*test*
